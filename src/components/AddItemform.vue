@@ -12,7 +12,6 @@
       <input v-model="itemId" type="number" required />
 
       <button type="submit">Submit</button>
-      <button type="button" @click="$emit('close-form')">Cancel</button>
     </form>
   </div>
 </template>
@@ -33,8 +32,10 @@ export default {
         item_name: this.itemName,
         price: this.itemPrice
       };
-      this.$store.dispatch('addItem', newItem); // Send to Vuex
-      this.$emit('close-form'); // Close form after adding
+      this.$store.dispatch('addItem', newItem); 
+      this.itemName="";
+      this.itemPrice="";
+      this.itemId="";
     }
   }
 };

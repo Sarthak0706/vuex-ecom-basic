@@ -1,4 +1,3 @@
-
 import { createStore } from 'vuex';
 
 export default createStore({
@@ -12,11 +11,35 @@ export default createStore({
   mutations: {
     ADD_ITEM(state, newItem) {
       state.product.push(newItem);
+    },
+    UPDATE_ITEM(state, updatedItem) {
+      const index = state.product.findIndex(item => item.id === updatedItem.id);
+      if (index !== -1) {
+        state.product[index] = { ...updatedItem };
+      }
+    },
+    DELETE_ITEM(state,itemId)
+    {
+      state.product = state.product.filter(x => x.id !== itemId);
     }
   },
   actions: {
     addItem({ commit }, newItem) {
       commit('ADD_ITEM', newItem);
+    },
+    updateItem({ commit }, updatedItem) {
+      commit('UPDATE_ITEM', updatedItem);
+    },
+    deletedItem({commit},itemId)
+    {
+      commit('DELETE_ITEM',itemId)
+    }
+  },
+  getters:
+  {
+    allProducts(state)
+    {
+      return state.product;
     }
   }
 });

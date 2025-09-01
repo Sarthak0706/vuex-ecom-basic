@@ -1,47 +1,10 @@
-<!-- <template>
-  <div class="productlisting">
-    <h3>Listing All The Products</h3>
-    <ul v-for="(product,key) in productlist1" :key="product.id">
-      {{key+1}}. {{ product.item_name }} -- {{ product.price }}
-    </ul>
-  </div>
-  <div class="adding-item" style="padding-left:50px">
-    <button @click="additem()">Add More Items to cart</button>
-  </div>
-</template>   
-
-<script>
-export default {
-  computed: {
-    productlist1() {
-      return this.$store.state.product;
-    }
-  }
-};
-</script>
-
-<style scoped>
-.adding-item {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-}
-.productlisting{
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  background-color: bisque;
-}
-</style> -->
-
-
 <template>
   <div class="productlisting">
     <h3>Listing All The Products</h3>
-    <ul v-for="(product, key) in productlist1" :key="product.id">
-      {{ key + 1 }}. {{ product.item_name }} -- {{ product.price }}
+    <ul v-for="(product2, key) in productlist1" :key="product2.id">
+      {{ key + 1 }}. {{ product2.item_name }} -- {{ product2.price }}
+      <button @click="openUpdateForm(product2)">Update Item</button>
+      <button @click="deleteitem(product2.id)">Delete Item</button>
     </ul>
   </div>
 
@@ -49,28 +12,52 @@ export default {
     <button @click="additem">Add More Items to cart</button>
   </div>
 
-  <!-- Conditionally show the form -->
-  <AddItemForm v-if="showForm" @close-form="showForm = false" />
-</template>   
+  <div>
+    <AddItemForm v-if="showform" />
+  </div>
+  <div>
+    <UpdateItemForm
+      v-if="showUpdateForm"
+      :item="selectedItem"
+      @update-item="updateitems"
+      @close-form="showUpdateForm = false"
+    />
+  </div>
+</template>
 
 <script>
 import AddItemForm from './AddItemForm.vue';
+import UpdateItemForm from './UpdateItemForm.vue';
 
 export default {
-  components: { AddItemForm },
+  components: { AddItemForm, UpdateItemForm },
   data() {
     return {
-      showForm: false
+      showform: false,
+      showUpdateForm: false,
+      selectedItem: null
     };
   },
   computed: {
     productlist1() {
-      return this.$store.state.product;
+      return this.$store.getters.allProducts;
     }
   },
   methods: {
     additem() {
-      this.showForm = true;
+      this.showform = true;
+    },
+    openUpdateForm(product) {
+      this.selectedItem = { ...product };
+      this.showUpdateForm = true;
+    },
+    updateitems(updatedItem) {
+      this.$store.dispatch('updateItem', updatedItem);
+      this.showUpdateForm = false;
+    },
+    deleteitem(id)
+    {
+      this.$store.dispatch('deletedItem',id);
     }
   }
 };
@@ -83,7 +70,6 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-
 .productlisting {
   align-items: center;
   display: flex;
