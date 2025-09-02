@@ -1,7 +1,7 @@
 <template>
   <div class="productlisting">
     <h3>Listing All The Products</h3>
-    <ul v-for="(product2, key) in productlist1" :key="product2.id">
+    <ul v-for="(product2, key) in product" :key="product2.id">
       {{ key + 1 }}. {{ product2.item_name }} -- {{ product2.price }}
       <button @click="openUpdateForm(product2)">Update Item</button>
       <button @click="deleteitem(product2.id)">Delete Item</button>
@@ -28,7 +28,7 @@
 <script>
 import AddItemForm from './AddItemForm.vue';
 import UpdateItemForm from './UpdateItemForm.vue';
-
+import {mapState,mapActions} from 'vuex';
 export default {
   components: { AddItemForm, UpdateItemForm },
   data() {
@@ -39,11 +39,13 @@ export default {
     };
   },
   computed: {
-    productlist1() {
-      return this.$store.getters.allProducts;
-    }
+    ...mapState(['product'])
+    // productlist1() {
+    //   return this.$store.getters.allProducts;
+    // }
   },
   methods: {
+    ...mapActions(['addItem', 'updateItem', 'deletedItem']),
     additem() {
       this.showform = true;
     },
@@ -52,12 +54,12 @@ export default {
       this.showUpdateForm = true;
     },
     updateitems(updatedItem) {
-      this.$store.dispatch('updateItem', updatedItem);
+      this.updateItem(updatedItem);
       this.showUpdateForm = false;
     },
     deleteitem(id)
     {
-      this.$store.dispatch('deletedItem',id);
+      this.deletedItem(id);
     }
   }
 };
