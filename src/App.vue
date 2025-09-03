@@ -1,15 +1,22 @@
 <script setup>
-import ProductCart from './components/ProductCart.vue'
+import AddCart from './components/AddCart.vue'
 import ProductShow from './components/ProductShow.vue'
-
+import ProductCart from './components/ProductCart.vue'
 </script>
 
 <template>
-<ProductCart></ProductCart>
-<ProductShow ></ProductShow>
-
+  <div class="app-container">
+    <ProductCart />
+    <ProductShow />
+    <AddCart />
+  </div>
 </template>
 
 <style scoped>
-
+.app-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
 </style>

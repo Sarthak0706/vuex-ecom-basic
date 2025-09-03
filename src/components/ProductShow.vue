@@ -1,25 +1,23 @@
+
 <template>
   <div class="productlisting">
     <h3>Listing All The Products</h3>
-    <ul v-for="(product2, key) in product" :key="product2.id">
-      {{ key + 1 }}. {{ product2.item_name }} -- {{ product2.price }}
-      <button @click="openUpdateForm(product2)">Update Item</button>
-      <button @click="deleteitem(product2.id)">Delete Item</button>
+    <ul v-for="(item, index) in product" :key="item.id">
+      {{ index + 1 }}. {{ item.item_name }} -- ${{ item.price }}
+      <button @click="openUpdateForm(item)">Update</button>
+      <button @click="deletedItem(item.id)">Delete</button>
+      <button @click="addToCart(item)">Add To Cart</button>
     </ul>
-  </div>
 
-  <div class="adding-item" style="padding-left:50px">
-    <button @click="additem">Add More Items to cart</button>
-  </div>
+    <div class="adding-item">
+      <button @click="showform = true">Add More Items</button>
+    </div>
 
-  <div>
     <AddItemForm v-if="showform" />
-  </div>
-  <div>
     <UpdateItemForm
       v-if="showUpdateForm"
       :item="selectedItem"
-      @update-item="updateitems"
+      @update-item="updateItem"
       @close-form="showUpdateForm = false"
     />
   </div>
@@ -28,7 +26,8 @@
 <script>
 import AddItemForm from './AddItemForm.vue';
 import UpdateItemForm from './UpdateItemForm.vue';
-import {mapState,mapActions} from 'vuex';
+import { mapState, mapActions } from 'vuex';
+
 export default {
   components: { AddItemForm, UpdateItemForm },
   data() {
@@ -40,26 +39,12 @@ export default {
   },
   computed: {
     ...mapState(['product'])
-    // productlist1() {
-    //   return this.$store.getters.allProducts;
-    // }
   },
   methods: {
-    ...mapActions(['addItem', 'updateItem', 'deletedItem']),
-    additem() {
-      this.showform = true;
-    },
-    openUpdateForm(product) {
-      this.selectedItem = { ...product };
+    ...mapActions(['updateItem', 'deletedItem', 'addToCart']),
+    openUpdateForm(item) {
+      this.selectedItem = { ...item };
       this.showUpdateForm = true;
-    },
-    updateitems(updatedItem) {
-      this.updateItem(updatedItem);
-      this.showUpdateForm = false;
-    },
-    deleteitem(id)
-    {
-      this.deletedItem(id);
     }
   }
 };
@@ -69,13 +54,12 @@ export default {
 .adding-item {
   margin-top: 10px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
 }
 .productlisting {
-  align-items: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
   background-color: bisque;
 }
 </style>

@@ -6,10 +6,7 @@
       <input v-model="itemName" type="text" required />
 
       <label>Item Price:</label>
-      <input v-model="itemPrice" type="text" required />
-
-      <label>Item ID:</label>
-      <input v-model="itemId" type="number" required />
+      <input v-model.number="itemPrice" type="number" required />
 
       <button type="submit">Submit</button>
     </form>
@@ -17,28 +14,42 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import { mapState, mapActions } from 'vuex';
+
 export default {
   data() {
     return {
       itemName: "",
-      itemPrice: "",
-      itemId: ""
+      itemPrice: ""
     };
+  },
+  computed: {
+    ...mapState(['product'])
   },
   methods: {
     ...mapActions(['addItem']),
     submitForm() {
+      const nextId = this.product.length > 0 ? Math.max(...this.product.map(item => item.id)) + 1 : 1;
       const newItem = {
-        id: this.itemId,
+        id: nextId,
         item_name: this.itemName,
-        price: this.itemPrice
+        price: Number(this.itemPrice)
       };
-      this.addItem(newItem); 
-      this.itemName="";
-      this.itemPrice="";
-      this.itemId="";
+
+      this.addItem(newItem);
+      this.itemName = "";
+      this.itemPrice = "";
     }
   }
 };
 </script>
+
+<style scoped>
+.form-container {
+  background: #f8f8f8;
+  padding: 15px;
+  border-radius: 8px;
+  max-width: 300px;
+  margin: auto;
+}
+</style>
