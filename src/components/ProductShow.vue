@@ -38,10 +38,11 @@ export default {
     };
   },
   computed: {
-    ...mapState(['product'])
+    ...mapState('product',['product'])
   },
   methods: {
-    ...mapActions(['updateItem', 'deletedItem', 'addToCart']),
+    ...mapActions('product', ['updateItem', 'deletedItem']),
+    ...mapActions('cart', ['addToCart']),
     openUpdateForm(item) {
       this.selectedItem = { ...item };
       this.showUpdateForm = true;

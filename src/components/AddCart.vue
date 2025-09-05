@@ -19,10 +19,10 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   computed: {
-    ...mapGetters(['cartItems', 'cartTotalItems', 'cartTotalPrice'])
+    ...mapGetters('cart',['cartItems', 'cartTotalItems', 'cartTotalPrice'])
   },
   methods: {
-    ...mapActions(['removeFromCart', 'clearCart'])
+    ...mapActions('cart',['removeFromCart', 'clearCart'])
   }
 };
 </script>

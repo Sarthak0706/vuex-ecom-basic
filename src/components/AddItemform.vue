@@ -24,10 +24,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(['product'])
+    ...mapState('product', ['product'])
   },
   methods: {
-    ...mapActions(['addItem']),
+   ...mapActions('product', ['addItem']),
     submitForm() {
       const nextId = this.product.length > 0 ? Math.max(...this.product.map(item => item.id)) + 1 : 1;
       const newItem = {
